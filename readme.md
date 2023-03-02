@@ -1,4 +1,4 @@
-# we-movie
+# Auto_movie_Tools
 
 爬取豆瓣下月即将上映电影并生成到微信公众号图文文章
 
@@ -16,12 +16,12 @@ bs4
 
 3. `python3 main.py`
 
-## demo
+## 欢迎关注
 
-安影静视公众号
+风中玲音公众号
 
-![](https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MzUyNzgyNjM0MA==&mid=2247483689&idx=1&sn=adf680ef9d4a8cf2ca6467ff3ff74117&send_time=)
+![](./qrcode_for_gh_d731799e7c94_344.jpg)
 
 ## 注意
 
-部署到服务器定时运行请测试图表是否能够生成中文字体，如果不能还请安装、或者修改字体配置
+部署到服务器定时运行请测试图表是否能够生成中文字体，如果不能还请安装、或者修改字体配置(字体默认为：SimHei)，位于./spider_box_office.py

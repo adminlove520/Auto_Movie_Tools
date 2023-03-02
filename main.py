@@ -89,8 +89,8 @@ for movie in movies:
 
 article = {
     "title": title,
-    "author": '爱买酱',
-    "digest": '下个月有点东西',
+    "author": '拔刀能留下落樱吗',
+    "digest": '每月电影热榜推送_{datetime.datetime.now().strftime("%Y年%m月")}|推送时间：{datetime.datetime.now().strftime("%Y年%m月%d日")}',
     "content": '<div>{}<div>'.format(''.join(content)),
     "thumb_media_id": media_id,
 }
