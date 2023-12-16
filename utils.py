@@ -37,13 +37,11 @@ def isNextMonth(text_date):
         date = datetime.strptime(text_date, '%Y年%m月%d日')
     except ValueError:
         date = datetime.strptime(text_date, '%m月%d日')
-    now = datetime.now()
-    next_month = now.month + 1
-    if next_month > 12:
-        next_month = 1
-    return date.month == next_month and date.year == now.year
-
-# # 测试代码
-# print(getDayHowWeek())
-# print(isInNextWeek('12月31日'))
-# print(isNextMonth('12月31日'))
+        now = datetime.now()
+        next_month = now.month + 1
+        if next_month > 12:
+            next_month = 1
+        if date.month == next_month or (date.month == 12 and next_month == 1):
+            return True
+        else:
+            return False

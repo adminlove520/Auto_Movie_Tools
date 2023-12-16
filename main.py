@@ -70,9 +70,9 @@ content = []
 title = f'电影排行榜｜新片介绍｜{datetime.datetime.now().strftime("%Y年%m月")}'
 
 movies = spiderMovies()
-# if len(movies) == 0:
-#     print(title + '没有新片')
-#     exit()
+if len(movies) == 0:
+    print(title + '没有新片')
+    exit()
 box_office = spiderBoxOffice()
 
 box_office_image = upload_article_image(box_office['image'])

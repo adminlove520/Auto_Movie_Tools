@@ -6,6 +6,7 @@ import json
 import time
 
 from utils import isInNextWeek, isNextMonth
+# 解决如果遇到12月不能爬取，则改desc为asc  暂时解决了
 s = requests.Session()
 # get douban coming movie list
 headers = {
