@@ -70,9 +70,9 @@ content = []
 title = f'电影排行榜｜新片介绍｜{datetime.datetime.now().strftime("%Y年%m月")}'
 
 movies = spiderMovies()
-if len(movies) == 0:
-    print(title + '没有新片')
-    exit()
+# if len(movies) == 0:
+#     print(title + '没有新片')
+#     exit()
 box_office = spiderBoxOffice()
 
 box_office_image = upload_article_image(box_office['image'])
@@ -90,7 +90,7 @@ for movie in movies:
 article = {
     "title": title,
     "author": '拔刀能留下落樱吗',
-    "digest": '每月电影热榜推送_{datetime.datetime.now().strftime("%Y年%m月")}|推送时间：{datetime.datetime.now().strftime("%Y年%m月%d日")}',
+    "digest": '每月电影热榜推送_|推送时间：',
     "content": '<div>{}<div>'.format(''.join(content)),
     "thumb_media_id": media_id,
 }
