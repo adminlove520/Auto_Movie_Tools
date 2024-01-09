@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import datetime
 import requests
+import json
 # plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
@@ -31,7 +32,7 @@ def bar_chart(data):
 
 
 def get_last_month_data():
-    url = "http://test.www.endata.com.cn/API/GetData.ashx"
+    url = "https://test.www.endata.com.cn/API/GetData.ashx"
     payload = f"startTime={last_month}&MethodName=BoxOffice_GetMonthBox"
     headers = {
         'Connection': 'keep-alive',
@@ -39,16 +40,26 @@ def get_last_month_data():
         'X-Requested-With': 'XMLHttpRequest',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Origin': 'http://test.www.endata.com.cn',
+        'Origin': 'https://test.www.endata.com.cn',
         'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6'
     }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    # response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+    print(response.text)
 
-    rjson = response.json()
-    data = rjson["Data"]["Table"]
-    data.sort(key=lambda x: x["boxoffice"])
-    return data
+    # rjson = response.json()
+    # data = rjson["Data"]["Table"]
+    # data.sort(key=lambda x: x["boxoffice"])
+    # return data
+    try:
+        rjson = response.json()
+        data = rjson["Data"]["Table"]
+        data.sort(key=lambda x: x["boxoffice"])
+        return data
+    except json.JSONDecodeError:
+        print("解析JSON时发生错误，跳过脏数据")
+        return []
 
 
 def spiderBoxOffice():
