@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import os
 import json
 import time
+import re
 
 from utils import isInNextWeek, isNextMonth
 # 解决如果遇到12月不能爬取，则改desc为asc  暂时解决了
@@ -107,23 +108,52 @@ class Movie:
         return f'{self.title}\n{self.info}\n{self.summary}\n{self.hot_comment}\n'
 
 
+# def spiderMovies():
+#     movies = []
+#     for tr in trs:
+#         tds = tr.find_all('td')
+#         date = tds[0].text.strip()
+#         print(date)
+#         if isNextMonth(date):
+#             title = tds[1].text.strip()
+#             print('spidering', title)
+#             link = tds[1].find('a').get('href')
+#             sort_id = tds[-1].text.strip().replace('人', '')
+#             movie = Movie(title, link, sort_id)
+#             movies.append(movie.toDict())
+#             time.sleep(1)
+#     movies.sort(key=lambda x: x['sort_id'], reverse=True)
+#     with open('movies.json', 'w', encoding='utf-8') as f:
+#         json.dump(movies, f, ensure_ascii=False, indent=4)
+
+#     # movies = json.load(open('movies.json', 'r', encoding='utf-8'))
+#     return movies
+
+
+
 def spiderMovies():
     movies = []
     for tr in trs:
         tds = tr.find_all('td')
         date = tds[0].text.strip()
         print(date)
-        if isNextMonth(date):
-            title = tds[1].text.strip()
-            print('spidering', title)
-            link = tds[1].find('a').get('href')
-            sort_id = tds[-1].text.strip().replace('人', '')
-            movie = Movie(title, link, sort_id)
-            movies.append(movie.toDict())
-            time.sleep(1)
+        # 使用正则表达式匹配日期字符串
+        match = re.match(r"\d{2}月\d{2}日", date)
+        if match:
+            date = match.group()
+            if isNextMonth(date):
+                title = tds[1].text.strip()
+                print('spidering', title)
+                link = tds[1].find('a').get('href')
+                sort_id = tds[-1].text.strip().replace('人', '')
+                movie = Movie(title, link, sort_id)
+                movies.append(movie.toDict())
+                time.sleep(1)
+        else:
+            print('日期格式不符合要求，跳过数据：', date)
     movies.sort(key=lambda x: x['sort_id'], reverse=True)
     with open('movies.json', 'w', encoding='utf-8') as f:
         json.dump(movies, f, ensure_ascii=False, indent=4)
 
-    # movies = json.load(open('movies.json', 'r', encoding='utf-8'))
+    movies = json.load(open('movies.json', 'r', encoding='utf-8'))
     return movies

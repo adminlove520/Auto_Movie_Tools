@@ -48,18 +48,21 @@ def get_last_month_data():
     response = requests.request("POST", url, headers=headers, data=payload, verify=False)
     print(response.text)
 
-    # rjson = response.json()
-    # data = rjson["Data"]["Table"]
-    # data.sort(key=lambda x: x["boxoffice"])
-    # return data
-    try:
-        rjson = response.json()
-        data = rjson["Data"]["Table"]
-        data.sort(key=lambda x: x["boxoffice"])
-        return data
-    except json.JSONDecodeError:
-        print("解析JSON时发生错误，跳过脏数据")
-        return []
+    rjson = response.json()
+    data = rjson["Data"]["Table"]
+    data.sort(key=lambda x: x["boxoffice"])
+    return data
+    rjson = json.load(open('res.json', 'r', encoding='utf-8'))
+    # try:
+    #     rjson = response.json()
+    #     data = rjson["Data"]["Table"]
+    #     data.sort(key=lambda x: x["boxoffice"])
+    #     return data
+    # except json.JSONDecodeError:
+    #     print("解析JSON时发生错误，跳过脏数据")
+    #     return []
+
+
 
 
 def spiderBoxOffice():
