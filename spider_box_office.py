@@ -53,14 +53,14 @@ def get_last_month_data():
     data.sort(key=lambda x: x["boxoffice"])
     return data
     rjson = json.load(open('res.json', 'r', encoding='utf-8'))
-    # try:
-    #     rjson = response.json()
-    #     data = rjson["Data"]["Table"]
-    #     data.sort(key=lambda x: x["boxoffice"])
-    #     return data
-    # except json.JSONDecodeError:
-    #     print("解析JSON时发生错误，跳过脏数据")
-    #     return []
+    try:
+        rjson = response.json()
+        data = rjson["Data"]["Table"]
+        data.sort(key=lambda x: x["boxoffice"])
+        return data
+    except json.JSONDecodeError:
+        print("解析JSON时发生错误，跳过脏数据")
+        return []
 
 
 

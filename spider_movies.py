@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import os
 import json
 import time
+import datetime
 import re
 
 from utils import isInNextWeek, isNextMonth
@@ -22,7 +23,7 @@ headers = {
     'Sec-Fetch-Mode': 'navigate',
     'Sec-Fetch-User': '?1',
     'Sec-Fetch-Dest': 'document',
-    'Referer': 'https://movie.douban.com/coming?sequence=desc',
+    'Referer': 'https://movie.douban.com/coming?sequence=asc',
     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6',
     'Cookie': 'bid=-XxHhy3Yi4A; ll="118099"; __gads=ID=b05a206f81e187ba-2266ac1ea2cb00d0:T=1631670820:RT=1631670820:S=ALNI_MZQdF2h9pxmZIXp2KuNv5UiKVNEYw; __gpi=00000000-0000-0000-0000-000000000000&ZG91YmFuLmNvbQ==&Lw==; __utmc=30149280; gr_user_id=70469d94-f059-47de-b1ec-07ac11082bab; viewed="30247885_25926153_1083139_1880126_5408893_1058010_1179303_1818527_30143702"; __utmc=223695111; _vwo_uuid_v2=DCC2FA09466B4BB0228B6B87FCFE4C321|3d165cfad6442500a396189d4d41c351; ck=_ep6; __utmv=30149280.21974; _ga=GA1.2.1241558271.1632808366; _gid=GA1.2.1186091195.1641992913; ap_v=0,6.0; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1642000963%2C%22https%3A%2F%2Fwww.douban.com%2F%22%5D; _pk_ses.100001.4cf6=*; __utma=30149280.1241558271.1632808366.1641992699.1642000963.12; __utmb=30149280.0.10.1642000963; __utmz=30149280.1642000963.12.6.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=223695111.304327830.1639125866.1641992699.1642000963.6; __utmb=223695111.0.10.1642000963; __utmz=223695111.1642000963.6.5.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _pk_id.100001.4cf6=cced5894b0bde180.1639125865.6.1642001214.1641993775.'
 }
@@ -108,52 +109,23 @@ class Movie:
         return f'{self.title}\n{self.info}\n{self.summary}\n{self.hot_comment}\n'
 
 
-# def spiderMovies():
-#     movies = []
-#     for tr in trs:
-#         tds = tr.find_all('td')
-#         date = tds[0].text.strip()
-#         print(date)
-#         if isNextMonth(date):
-#             title = tds[1].text.strip()
-#             print('spidering', title)
-#             link = tds[1].find('a').get('href')
-#             sort_id = tds[-1].text.strip().replace('人', '')
-#             movie = Movie(title, link, sort_id)
-#             movies.append(movie.toDict())
-#             time.sleep(1)
-#     movies.sort(key=lambda x: x['sort_id'], reverse=True)
-#     with open('movies.json', 'w', encoding='utf-8') as f:
-#         json.dump(movies, f, ensure_ascii=False, indent=4)
-
-#     # movies = json.load(open('movies.json', 'r', encoding='utf-8'))
-#     return movies
-
-
-
 def spiderMovies():
     movies = []
     for tr in trs:
         tds = tr.find_all('td')
         date = tds[0].text.strip()
         print(date)
-        # 使用正则表达式匹配日期字符串
-        match = re.match(r"\d{2}月\d{2}日", date)
-        if match:
-            date = match.group()
-            if isNextMonth(date):
-                title = tds[1].text.strip()
-                print('spidering', title)
-                link = tds[1].find('a').get('href')
-                sort_id = tds[-1].text.strip().replace('人', '')
-                movie = Movie(title, link, sort_id)
-                movies.append(movie.toDict())
-                time.sleep(1)
-        else:
-            print('日期格式不符合要求，跳过数据：', date)
+        if isNextMonth(date):
+            title = tds[1].text.strip()
+            print('spidering', title)
+            link = tds[1].find('a').get('href')
+            sort_id = tds[-1].text.strip().replace('人', '')
+            movie = Movie(title, link, sort_id)
+            movies.append(movie.toDict())
+            time.sleep(1)
     movies.sort(key=lambda x: x['sort_id'], reverse=True)
     with open('movies.json', 'w', encoding='utf-8') as f:
         json.dump(movies, f, ensure_ascii=False, indent=4)
 
-    movies = json.load(open('movies.json', 'r', encoding='utf-8'))
+    # movies = json.load(open('movies.json', 'r', encoding='utf-8'))
     return movies

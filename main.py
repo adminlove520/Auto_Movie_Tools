@@ -73,20 +73,21 @@ movies = spiderMovies()
 if len(movies) == 0:
     print(title + '没有新片')
     exit()
+    # 暂时移除 box_office介绍 bug尚未解决
 # box_office = spiderBoxOffice()
 
 # box_office_image = upload_article_image(box_office['image'])
 # content.append(
 #     f'''{generate_p_html('先看上月票房排行榜')}{generate_image_html(box_office_image, '上月票房排行榜')}{generate_indent_p_html(generate_box_office_text(box_office['data']))}''')
 
-box_office = spiderBoxOffice()
+# box_office = spiderBoxOffice()
 
-if not box_office['data']:
-    box_office['data'] = []
+# if not box_office['data']:
+#     box_office['data'] = []
 
-box_office_image = upload_article_image(box_office['image'])
-content.append(
-    f'''{generate_p_html('先看上月票房排行榜')}{generate_image_html(box_office_image, '上月票房排行榜')}{generate_indent_p_html(generate_box_office_text(box_office['data']))}''')
+# box_office_image = upload_article_image(box_office['image'])
+# content.append(
+#     f'''{generate_p_html('先看上月票房排行榜')}{generate_image_html(box_office_image, '上月票房排行榜')}{generate_indent_p_html(generate_box_office_text(box_office['data']))}''')
 
 
 media_id = upload_cover(movies[0]['image'])
